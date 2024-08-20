@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Bucin Plus</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #ffe6e6;
+            color: #ff4d4d;
+        }
+        .page {
+            text-align: center;
+            display: none;
+            max-width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.3);
+        }
+        .active {
+            display: block;
+        }
+        button {
+            background-color: #ff9999;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff7777;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ff9999;
+            width: 200px;
+        }
+        .heart {
+            font-size: 40px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .heart:hover {
+            transform: scale(1.2);
+            color: #ffcccc;
+        }
+        .heart.clicked {
+            color: #888;
+            transform: scale(0.9);
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            animation: popIn 0.5s ease-out;
+        }
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            80% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .floating-heart {
+            position: absolute;
+            font-size: 20px;
+            animation: float 5s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="floatingHearts"></div>
+
+    <div id="page1" class="page active">
+        <h1>Selamat Datang di Website Pilus</h1>
+        <p>"Cinta bukan hanya sekedar kata, tapi seluruh alasan aku ada di dunia ini"</p>
+        <button onclick="nextPage()">Next</button>
+    </div>
+
+    <div id="page2" class="page">
+        <h2>Masukkan Nama Kamu</h2>
+        <input type="text" id="nameInput" placeholder="Nama kamu">
+        <button onclick="submitName()">Kirim</button>
+    </div>
+
+    <div id="page3" class="page">
+        <h2 id="greetingText"></h2>
+        <p>Cinta ini sebesar langit dan bumi, tak akan pernah pudar</p>
+        <button onclick="nextPage()">Next</button>
+    </div>
+
+    <div id="page4" class="page">
+        <h2>Seberapa Dalam Cinta Kamu Padaku?</h2>
+        <div id="hearts">
+            <span class="heart" onclick="selectHeart(1)">❤️</span>
+            <span class="heart" onclick="selectHeart(2)">❤️</span>
+            <span class="heart" onclick="selectHeart(3)">❤️</span>
+            <span class="heart" onclick="selectHeart(4)">❤️</span>
+            <span class="heart" onclick="selectHeart(5)">❤️</span>
+        </div>
+        <p id="loveMessage"></p>
+    </div>
+
+    <div id="popup" class="popup">
+        <h2>aaaa melelehh! 😍</h2>
+        <p>Cinta kita tak terbatas, sejauh mana pun aku pergi, hatiku tetap untukmu!</p>
+        <button onclick="closePopup()">Tutup</button>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        let userName = '';
+
+        function nextPage() {
+            document.getElementById(`page${currentPage}`).classList.remove('active');
+            currentPage++;
+            document.getElementById(`page${currentPage}`).classList.add('active');
+        }
+
+        function submitName() {
+            userName = document.getElementById('nameInput').value;
+            document.getElementById('greetingText').innerText = `Halo ${userName} sayang, cinta ini tak terbatas seperti semesta`;
+            nextPage();
+        }
+
+        function selectHeart(number) {
+            const hearts = document.querySelectorAll('#hearts .heart');
+            let message = '';
+            hearts.forEach((heart, index) => {
+                if (index < number) {
+                    heart.classList.add('clicked');
+                } else {
+                    heart.classList.remove('clicked');
+                }
+            });
+
+            switch(number) {
+                case 1: message = "Masih kurang nih, sayangku. Tambah lagi cintanya, ya!"; break;
+                case 2: message = "Lumayan, tapi kita bisa lebih dari ini, kan?"; break;
+                case 3: message = "Cukup baik, tapi aku yakin cintamu bisa lebih besar lagi!"; break;
+                case 4: message = "Wah, sudah dekat sempurna nih, cinta kita makin kuat!"; break;
+                case 5: message = "Sempurna! Cinta kita bagaikan sinar mentari yang abadi!"; break;
+            }
+
+            document.getElementById('loveMessage').innerText = message;
+
+            if (number === 5) {
+                setTimeout(() => {
+                    document.getElementById('popup').style.display = 'block';
+                }, 500);
+            }
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        // Tambahkan hati mengambang
+        function addFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.getElementById('floatingHearts').appendChild(heart);
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(addFloatingHeart, 300);
+    </script>
+</body>
+</html>
